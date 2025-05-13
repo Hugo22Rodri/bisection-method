@@ -12,11 +12,14 @@
 
 {% if pasos %}
     <table>
+        <p>Iteraciones:</p>
         <tr><th>a</th><th>b</th><th>c</th><th>f(c)</th></tr>
         {% for p in pasos %}
         <tr><td>{{ p.0 }}</td><td>{{ p.1 }}</td><td>{{ p.2 }}</td><td>{{ p.3 }}</td></tr>
         {% endfor %}
     </table>
+   
+    <p>Raíz aproximada: <strong>{{ pasos|last|slice:'2' }}</strong></p>
 
     <button id="toggleGraficaBtn">Mostrar Gráfica</button>
     <img id="graficaImg" src="{{ grafica_url }}" alt="Gráfica de convergencia" width="500px">

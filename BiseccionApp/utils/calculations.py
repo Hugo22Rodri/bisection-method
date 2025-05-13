@@ -3,24 +3,37 @@ import sympy as sp
 def biseccion(datos):
     try:
         x = sp.Symbol("x")
-        f = sp.sympify(datos["ecuacion"])
-        a = float(datos["a"])  # Conversión explícita a float
+        f_simbolica = sp.sympify(datos["ecuacion"])
+        f = sp.lambdify(x, f_simbolica, "numpy")  # Función numérica
+        a = float(datos["a"])
         b = float(datos["b"])
         tol = float(datos["tolerancia"])
 
-        # Validar que el intervalo sea válido
-        if f.subs(x, a) * f.subs(x, b) >= 0:
-            return {"error": "Intervalo inválido: no garantiza una raíz."}
+        # Verificar si a o b son raíces
+        fa, fb = f(a), f(b)
+        if abs(fa) < tol:
+            return {"raiz": a, "pasos": []}
+        if abs(fb) < tol:
+            return {"raiz": b, "pasos": []}
+        if fa * fb > 0:
+            return {"error": "Intervalo inválido: no hay cambio de signo."}
 
         pasos = []
         while abs(b - a) > tol:
             c = (a + b) / 2
-            fc = float(f.subs(x, c).evalf())  # Valor exacto como float
-            pasos.append((a, b, c, fc))  # Sin redondeo
+            fc = f(c)
+            pasos.append((a, b, c, fc))
 
-            # Actualización directa del intervalo
-            a, b = (a, c) if f.subs(x, a) * fc < 0 else (c, b)
+            # Verificar si c es raíz
+            if abs(fc) < tol:
+                return {"raiz": c, "pasos": pasos}
 
-        return {"raiz": (a + b) / 2, "pasos": pasos}  # Resultado exacto
+            # Actualizar intervalo
+            if fa * fc < 0:
+                b, fb = c, fc
+            else:
+                a, fa = c, fc
+
+        return {"raiz": (a + b) / 2, "pasos": pasos}
     except Exception as e:
         return {"error": f"Error: {str(e)}"}
