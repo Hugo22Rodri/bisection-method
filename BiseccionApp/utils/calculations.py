@@ -2,9 +2,9 @@ import sympy as sp
 
 def biseccion(datos):
     try:
-        x = sp.Symbol("x")
+        k = sp.Symbol("k")
         f_simbolica = sp.sympify(datos["ecuacion"])
-        f = sp.lambdify(x, f_simbolica, "numpy")  # Función numérica
+        f = sp.lambdify(k, f_simbolica, "numpy")  # Función numérica
         a = float(datos["a"])
         b = float(datos["b"])
         tol = float(datos["tolerancia"])

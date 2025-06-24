@@ -19,7 +19,7 @@
         {% endfor %}
     </table>
    
-    <p>Raíz aproximada: <strong>{{ pasos|last|slice:'2' }}</strong></p>
+    <p>Raíz aproximada: <strong>{{ pasos|last|slice:'2' }} N/m</strong></p>
 
     <button id="toggleGraficaBtn">Mostrar Gráfica</button>
     <img id="graficaImg" src="{{ grafica_url }}" alt="Gráfica de convergencia" width="500px">
